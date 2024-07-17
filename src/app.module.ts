@@ -1,34 +1,33 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsuarioModule } from './usuario/usuario.module';
-import { ClienteModule } from './cliente/cliente.module';
-import { VehiculoModule } from './vehiculo/vehiculo.module';
-import { OrdenModule } from './orden/orden.module';
-import { UsuarioController } from './modules/usuario/controllers/usuario.controller';
-import { VehiculoController } from './vehiculo/vehiculo.controller';
-import { OrdenController } from './orden/orden.controller';
-import { ClienteController } from './modules/cliente/controllers/cliente.controller';
-import { UsuarioService } from './modules/usuario/services/usuario.service';
-import { OrdenService } from './modules/orden/services/orden.service';
-import { ClienteService } from './modules/cliente/services/cliente.service';
-import { VehiculoService } from './modules/vehiculo/services/vehiculo.service';
+import { UsuarioModule } from './modulos/usuario/usuario.module';
+import { ClienteModule } from './modulos/cliente/cliente.module';
+import { VehiculoModule } from './modulos/vehiculo/vehiculo.module';
+import { OrdenModule } from './modulos/orden/orden.module';
+import * as Joi from 'joi';
+import { ConfigModule } from '@nestjs/config';
+import config from 'config/config';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [UsuarioModule, ClienteModule, VehiculoModule, OrdenModule],
-  controllers: [
-    AppController,
-    UsuarioController,
-    VehiculoController,
-    OrdenController,
-    ClienteController,
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      load: [config],
+      isGlobal: true,
+      validationSchema: Joi.object({
+        DATABASE_NAME: Joi.string().required(),
+        DATABASE_PORT: Joi.number().required(),
+      }),
+    }),
+    UsuarioModule,
+    ClienteModule,
+    VehiculoModule,
+    OrdenModule,
+    DatabaseModule,
   ],
-  providers: [
-    AppService,
-    UsuarioService,
-    OrdenService,
-    ClienteService,
-    VehiculoService,
-  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
