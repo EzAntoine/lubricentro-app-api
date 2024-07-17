@@ -26,7 +26,7 @@ export class ClienteController {
   @ApiOperation({ summary: 'Get client by ID.' })
   @Get(':id')
   getClientById(@Param('id') id: string) {
-    return this.clientService.findById(id);
+    return this.clientService.findOneById(id);
   }
 
   @ApiOperation({ summary: 'Create new client.' })
