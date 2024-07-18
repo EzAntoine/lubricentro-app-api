@@ -6,14 +6,13 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { ClienteService } from '../services/cliente.service';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { CreateClientDto, UpdateClientDTO } from '../dtos/client.dto';
 @ApiTags('Clients')
-@Controller('cliente')
+@Controller('clients')
 export class ClienteController {
   constructor(private clientService: ClienteService) {}
 
