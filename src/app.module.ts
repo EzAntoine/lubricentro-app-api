@@ -9,9 +9,11 @@ import * as Joi from 'joi';
 import { ConfigModule } from '@nestjs/config';
 import config from 'config/config';
 import { DatabaseModule } from './database/database.module';
+//import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
+    //MongooseModule.forRoot(process.env.DATABASE_MONGO_URI),
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [config],

@@ -12,7 +12,8 @@ import { MongooseModule } from '@nestjs/mongoose';
         const { connection, user, password, host, port, dbName } =
           configService.mongo;
         return {
-          uri: `${connection}://${host}:${port}`,
+          //uri: `${connection}://${user}:${password}@${host}:${port}/${dbName}`,
+          uri: `${connection}://${host}:${port}/${dbName}`,
           user,
           pass: password,
           dbName,
@@ -25,9 +26,10 @@ import { MongooseModule } from '@nestjs/mongoose';
     {
       provide: 'MONGO',
       useFactory: async (configService: ConfigType<typeof config>) => {
-        const { connection, user, password, host, port, dbName } =
+        const { connection, /*  user, password, */ host, port, dbName } =
           configService.mongo;
-        const uri = `${connection}://${user}:${password}@${host}:${port}/?authMechanism=DEFAULT`;
+        //const uri = `${connection}://${user}:${password}@${host}:${port}/?authMechanism=DEFAULT`;
+        const uri = `${connection}://${host}:${port}/${dbName}?authMechanism=DEFAULT`;
         const client = new MongoClient(uri);
         await client.connect();
         const database = client.db(dbName);
