@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Order } from 'src/modulos/orden/entities/order.entity';
 
@@ -19,3 +19,5 @@ export class Vehicle extends Document {
   @Prop({ type: [{ type: [Types.ObjectId], ref: 'Order' }] })
   orders: Types.Array<Order>;
 }
+
+export const VehicleSchema = SchemaFactory.createForClass(Vehicle);

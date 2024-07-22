@@ -1,9 +1,19 @@
 import { Module } from '@nestjs/common';
-import { VehiculoService } from './services/vehiculo.service';
+import { VehicleService } from './services/vehiculo.service';
 import { VehiculoController } from './controllers/vehiculo.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Vehicle, VehicleSchema } from './entities/vehicle.entity';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: Vehicle.name,
+        schema: VehicleSchema,
+      },
+    ]),
+  ],
   controllers: [VehiculoController],
-  providers: [VehiculoService],
+  providers: [VehicleService],
 })
 export class VehiculoModule {}

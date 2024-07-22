@@ -42,7 +42,7 @@ export class CreateVehicleDto {
   readonly orders: [];
 }
 
-export class UpdateVehicleDTO extends PartialType(
+export class UpdateVehicleDto extends PartialType(
   OmitType(CreateVehicleDto, []),
 ) {
   readonly ownerId?: string;
