@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Order } from 'src/modulos/orden/entities/order.entity';
 
 @Schema()

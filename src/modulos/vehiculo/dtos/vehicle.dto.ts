@@ -1,7 +1,6 @@
 import { ApiProperty, PartialType, OmitType } from '@nestjs/swagger';
 import {
   IsArray,
-  IsEmail,
   IsNotEmpty,
   IsOptional,
   IsPositive,
@@ -30,7 +29,7 @@ export class CreateVehicleDto {
   @Max(2050)
   readonly year: number;
   @ApiProperty({ description: 'Vehicle plate.' })
-  @IsEmail()
+  @IsString()
   @IsNotEmpty()
   readonly plate: string;
   @ApiProperty({ description: 'Vehicle details.' })

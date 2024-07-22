@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty } from 'class-validator';
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateOrderDto {
   @ApiProperty({ description: 'Order creation date.' })
@@ -8,24 +8,29 @@ export class CreateOrderDto {
   readonly date: Date;
   @ApiProperty({ description: 'Client ID.' })
   @IsNotEmpty()
+  @IsString()
   readonly clientId: string;
-  @ApiProperty({ description: 'Vehicle ID.' })
+  @ApiProperty({ description: 'Vehicle plate.' })
   @IsNotEmpty()
-  readonly vehicleId: string;
+  @IsString()
+  readonly vehiclePlate: string;
   @ApiProperty({ description: 'Failure description.' })
   @IsNotEmpty()
+  @IsString()
   readonly failure: string;
   @ApiProperty({ description: 'Estimated solution.' })
   @IsNotEmpty()
+  @IsString()
   readonly estimateSolution: string;
   @ApiProperty({ description: 'Price.' })
   @IsNotEmpty()
   readonly price: number;
   @ApiProperty({ description: 'Order status.' })
   @IsNotEmpty()
+  @IsString()
   readonly status: string;
   @ApiProperty({ description: 'Order observations.' })
-  @IsNotEmpty()
+  @IsString()
   readonly observations: string;
 }
 
