@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date } from 'mongoose';
 
 @Schema()
@@ -23,3 +23,5 @@ export class Order extends Document {
   @Prop() //Se puede agregar un enum con los trabajadores.
   responsible: string;
 }
+
+export const OrderSchema = SchemaFactory.createForClass(Order);
