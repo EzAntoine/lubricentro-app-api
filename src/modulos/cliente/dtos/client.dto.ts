@@ -25,7 +25,7 @@ export class CreateClientDto {
   @ApiProperty({ description: 'Client vehicles list.' })
   @IsArray()
   @IsNotEmpty()
-  readonly vehicles: [];
+  readonly vehicles: string[];
   @ApiProperty({ description: 'Client details.' })
   @IsString()
   readonly detail: string;

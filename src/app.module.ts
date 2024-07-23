@@ -10,6 +10,8 @@ import { ConfigModule } from '@nestjs/config';
 import config from 'config/config';
 import { DatabaseModule } from './database/database.module';
 //import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from './auth/auth.module';
+import { ApiKeyModule } from './auth/guards/api-key.module';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { DatabaseModule } from './database/database.module';
       load: [config],
       isGlobal: true,
       validationSchema: Joi.object({
+        API_KEY: Joi.string().required(),
         DATABASE_NAME: Joi.string().required(),
         DATABASE_PORT: Joi.number().required(),
       }),
@@ -28,6 +31,8 @@ import { DatabaseModule } from './database/database.module';
     VehiculoModule,
     OrdenModule,
     DatabaseModule,
+    AuthModule,
+    ApiKeyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

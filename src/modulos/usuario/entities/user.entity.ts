@@ -10,6 +10,11 @@ export class User extends Document {
   password: string;
   @Prop({ type: [{ type: [Types.ObjectId], ref: 'Order' }] })
   orders: Types.Array<Order>;
+  @Prop({
+    type: String,
+    enum: ['admin', 'invitado'],
+  })
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

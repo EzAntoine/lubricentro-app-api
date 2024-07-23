@@ -25,5 +25,7 @@ export default registerAs('config', () => {
       connection: DATABASE_MONGO_CONNECTION,
       URI: `mongodb://${DATABASE_MONGO_HOST}:${DATABASE_MONGO_PORT}/${DATABASE_NAME}`,
     },
+    apiKey: process.env.API_KEY,
+    jwtSecret: process.env.JWT_SECRET,
   };
 });
