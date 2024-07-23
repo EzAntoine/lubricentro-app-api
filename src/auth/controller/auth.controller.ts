@@ -12,6 +12,7 @@ export class AuthController {
   @Post('login')
   login(@Req() req: Request) {
     const op = req.user as User;
-    return this.authService.generateJWT(op);
+    const response = this.authService.generateJWT(op);
+    return response;
   }
 }

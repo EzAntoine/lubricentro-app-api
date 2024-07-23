@@ -8,6 +8,7 @@ import { AuthService } from './services/auth.service';
 import { AuthController } from './controller/auth.controller';
 //import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
@@ -17,8 +18,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       imports: [ConfigModule],
       inject: [config.KEY],
       useFactory: async (configService: ConfigType<typeof config>) => {
-        console.log('Config jwt: ', configService);
-        console.log(configService.jwtSecret);
         return {
           secret: configService.jwtSecret,
           signOptions: {
@@ -28,7 +27,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       },
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

@@ -4,7 +4,7 @@ import { Order } from 'src/modulos/orden/entities/order.entity';
 
 @Schema()
 export class User extends Document {
-  @Prop()
+  @Prop({ unique: true })
   username: string;
   @Prop()
   password: string;
