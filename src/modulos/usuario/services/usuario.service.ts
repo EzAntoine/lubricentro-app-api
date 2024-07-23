@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../entities/user.entity';
@@ -14,12 +14,17 @@ export class UserService {
   }
 
   async findOneById(id: string) {
-    return await this.userModel.findById(id).populate('orders').exec();
+    const user = await this.userModel.findById(id).populate('orders').exec();
+    if (!user)
+      throw new NotFoundException(`El usuario con id: #${id} no existe`);
+    return user;
   }
 
-  async findByEmail(email: string) {
+  /*   async findByEmail(email: string) {
+    if (!user)
+      throw new NotFoundException(`El usuario con email: ${email} no existe`);
     return await this.userModel.findOne({ email }).exec();
-  }
+  } */
 
   async create(payload: CreateUserDto) {
     const newUser = new this.userModel(payload);
@@ -32,15 +37,25 @@ export class UserService {
   }
 
   async update(id: string, payload: UpdateUserDto) {
-    return await this.userModel.findByIdAndUpdate(id, payload, { new: true });
+    const user = await this.userModel.findById(id);
+    if (!user)
+      throw new NotFoundException(`El usuario con id: #${id} no existe`);
+    return await this.userModel
+      .findByIdAndUpdate(id, payload, { new: true })
+      .exec();
   }
 
   async delete(id: string) {
-    return await this.userModel.findByIdAndDelete(id);
+    const user = await this.userModel.findById(id);
+    if (!user)
+      throw new NotFoundException(`El usuario con id: #${id} no existe`);
+    return await this.userModel.findByIdAndDelete(id).exec();
   }
 
   async addOrders(id: string, orders: string[]) {
     const usr = await this.userModel.findById(id);
+    if (!usr)
+      throw new NotFoundException(`El usuario con id: #${id} no existe`);
     orders.forEach((v) => usr.orders.push(v));
     return usr.save();
   }

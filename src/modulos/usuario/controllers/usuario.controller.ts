@@ -6,47 +6,55 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from '../services/usuario.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Public } from 'src/auth/decorators/is-public.decorator';
 
 @ApiTags('Users')
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
 export class UsuarioController {
   constructor(private userService: UserService) {}
 
   @ApiOperation({ summary: 'Get all Users.' })
   @Get()
-  getClients() {
+  getUsers() {
     return this.userService.findAll();
   }
 
-  @ApiOperation({ summary: 'Get client by ID.' })
+  @ApiOperation({ summary: 'Get user by ID.' })
   @Get(':id')
-  getClientById(@Param('id') id: string) {
+  getUserById(@Param('id') id: string) {
     return this.userService.findOneById(id);
   }
 
-  @ApiOperation({ summary: 'Create new client.' })
+  @ApiOperation({ summary: 'Create new user.' })
+  @Public()
   @Post()
-  createClient(@Body() payload: CreateUserDto) {
+  createUser(@Body() payload: CreateUserDto) {
     return this.userService.create(payload);
   }
 
-  @ApiOperation({ summary: 'Update an existing client by ID.' })
+  @ApiOperation({ summary: 'Update an existing user by ID.' })
   @Put(':id')
-  updateClient(
+  updateUser(
     @Param('id', MongoIdPipe) id: string,
     @Body() payload: UpdateUserDto,
   ) {
     return this.userService.update(id, payload);
   }
 
-  @ApiOperation({ summary: 'Remove a client by ID.' })
+  @ApiOperation({ summary: 'Remove a user by ID.' })
   @Delete(':id')
-  deleteClient(@Param('id', MongoIdPipe) id: string) {
+  deleteUser(@Param('id', MongoIdPipe) id: string) {
+    console.log('ingreso con id: ' + id);
+
     return this.userService.delete(id);
   }
 }
