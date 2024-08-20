@@ -30,7 +30,7 @@ export class UsuarioController {
 
   @ApiOperation({ summary: 'Get user by ID.' })
   @Get(':id')
-  getUserById(@Param('id') id: string) {
+  getUserById(@Param('id', MongoIdPipe) id: string) {
     return this.userService.findOneById(id);
   }
 

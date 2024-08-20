@@ -12,6 +12,7 @@ import { DatabaseModule } from './database/database.module';
 //import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { ApiKeyModule } from './auth/guards/api-key.module';
+import { ProductoController } from './modulos/producto/controllers/producto.controller';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { ApiKeyModule } from './auth/guards/api-key.module';
     AuthModule,
     ApiKeyModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ProductoController],
   providers: [AppService],
 })
 export class AppModule {}
