@@ -13,10 +13,10 @@ import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { CreateClientDto, UpdateClientDTO } from '../dtos/client.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+//import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @ApiTags('Clients')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard /* , RolesGuard */)
 @Controller('clients')
 export class ClienteController {
   constructor(private clientService: ClienteService) {}

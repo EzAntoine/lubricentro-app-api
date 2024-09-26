@@ -9,14 +9,15 @@ import * as Joi from 'joi';
 import { ConfigModule } from '@nestjs/config';
 import config from 'config/config';
 import { DatabaseModule } from './database/database.module';
-//import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { ApiKeyModule } from './auth/guards/api-key.module';
-import { ProductoController } from './modulos/producto/controllers/producto.controller';
+import { ProductoModule } from './modulos/producto/producto.module';
+import { JwtModule } from '@nestjs/jwt';
 
+secret: 'password';
 @Module({
   imports: [
-    //MongooseModule.forRoot(process.env.DATABASE_MONGO_URI),
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [config],
@@ -27,6 +28,11 @@ import { ProductoController } from './modulos/producto/controllers/producto.cont
         DATABASE_PORT: Joi.number().required(),
       }),
     }),
+    MongooseModule.forRoot(process.env.DATABASE_MONGO_URI),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '60s' },
+    }),
     UsuarioModule,
     ClienteModule,
     VehiculoModule,
@@ -34,8 +40,10 @@ import { ProductoController } from './modulos/producto/controllers/producto.cont
     DatabaseModule,
     AuthModule,
     ApiKeyModule,
+    ProductoModule,
+    JwtModule,
   ],
-  controllers: [AppController, ProductoController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
