@@ -31,11 +31,6 @@ export class UserService {
     if (!user) throw new NotFoundException(`El usuario no existe`);
     return user;
   }
-  /*   async findByEmail(email: string) {
-    if (!user)
-      throw new NotFoundException(`El usuario con email: ${email} no existe`);
-    return await this.userModel.findOne({ email }).exec();
-  } */
 
   async create(username: string, password: string): Promise<User> {
     return this.userModel.create({
@@ -43,15 +38,6 @@ export class UserService {
       password,
     });
   }
-  /*  async create(payload: CreateUserDto) {
-    const newUser = new this.userModel(payload);
-    const hashPassword = await bcrypt.hash(newUser.password, 10);
-    newUser.password = hashPassword;
-    const model = await newUser.save();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...rta } = model.toJSON();
-    return rta;
-  } */
 
   async update(id: string, payload: UpdateUserDto) {
     const user = await this.userModel.findById(id);
