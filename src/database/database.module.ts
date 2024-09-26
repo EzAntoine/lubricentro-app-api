@@ -12,13 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       useFactory: (configService: ConfigType<typeof config>) => {
         const { dbName, URI } = configService.mongo;
         return {
-          //uri: `${connection}://${user}:${password}@${host}:${port}/${dbName}`,
-          //uri: `${connection}://${host}:${port}/${dbName}`,
           uri: URI,
-          /* authMechanism: 'DEFAULT',
-          authSource: 'admin', */
-          /* user,
-          pass: password, */
           dbName,
         };
       },

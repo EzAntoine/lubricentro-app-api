@@ -12,11 +12,10 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import { CreateVehicleDto, UpdateVehicleDto } from '../dtos/vehicle.dto';
 import { VehicleService } from '../services/vehiculo.service';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('Vehicles')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('vehicles')
 export class VehiculoController {
   constructor(private vehicleService: VehicleService) {}

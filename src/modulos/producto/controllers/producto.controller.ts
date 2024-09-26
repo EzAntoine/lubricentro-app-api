@@ -10,13 +10,12 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import { CreateProductDto, UpdateProductDto } from '../dtos/product.dto';
 import { ProductoService } from '../services/producto.service';
 
 @ApiTags('Products')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('products')
 export class ProductoController {
   constructor(private productoService: ProductoService) {}

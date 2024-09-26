@@ -6,19 +6,18 @@ import {
   Param,
   Post,
   Put,
-  /* UseGuards, */
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from '../services/usuario.service';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
-import { /* CreateUserDto ,*/ UpdateUserDto } from '../dtos/user.dto';
-/*import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard'; */
+import { UpdateUserDto } from '../dtos/user.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Public } from 'src/auth/decorators/is-public.decorator';
 import * as bcrypt from 'bcrypt';
 
 @ApiTags('Users')
-//@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsuarioController {
   constructor(private readonly userService: UserService) {}

@@ -14,8 +14,8 @@ import { AuthModule } from './auth/auth.module';
 import { ApiKeyModule } from './auth/guards/api-key.module';
 import { ProductoModule } from './modulos/producto/producto.module';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 
-secret: 'password';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,6 +29,9 @@ secret: 'password';
       }),
     }),
     MongooseModule.forRoot(process.env.DATABASE_MONGO_URI),
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+    }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '60s' },
