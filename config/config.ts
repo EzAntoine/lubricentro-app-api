@@ -23,7 +23,7 @@ export default registerAs('config', () => {
       port: parseInt(DATABASE_MONGO_PORT, 10),
       host: DATABASE_MONGO_HOST,
       connection: DATABASE_MONGO_CONNECTION,
-      URI: `mongodb://${DATABASE_MONGO_HOST}:${DATABASE_MONGO_PORT}/${DATABASE_NAME}`,
+      URI: `${DATABASE_MONGO_CONNECTION}://${DATABASE_MONGO_HOST}:${DATABASE_MONGO_PORT}/${DATABASE_MONGODB}`,
     },
     apiKey: process.env.API_KEY,
     jwtSecret: process.env.JWT_SECRET,

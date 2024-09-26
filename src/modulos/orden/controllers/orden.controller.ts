@@ -13,10 +13,9 @@ import { OrdenService } from '../services/orden.service';
 import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @ApiTags('Orders')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('orders')
 export class OrdenController {
   constructor(private orderService: OrdenService) {}

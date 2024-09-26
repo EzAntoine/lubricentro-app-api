@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { Order } from 'src/modulos/orden/entities/order.entity';
+import { Document } from 'mongoose';
+
+//export type UserDocument = User & Document;
 
 @Schema()
 export class User extends Document {
@@ -8,13 +9,13 @@ export class User extends Document {
   username: string;
   @Prop()
   password: string;
-  @Prop({ type: [{ type: [Types.ObjectId], ref: 'Order' }] })
+  /*  @Prop({ type: [{ type: [Types.ObjectId], ref: 'Order' }] })
   orders: Types.Array<Order>;
   @Prop({
     type: String,
     enum: ['admin', 'invitado'],
   })
-  role: string;
+  role: string; */
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
