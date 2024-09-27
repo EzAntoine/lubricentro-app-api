@@ -14,7 +14,7 @@ export default registerAs('config', () => {
   return {
     database: {
       name: DATABASE_NAME,
-      port: PORT || 3000,
+      port: PORT || 3001,
     },
     mongo: {
       dbName: DATABASE_MONGODB,
