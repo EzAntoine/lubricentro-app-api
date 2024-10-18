@@ -13,7 +13,6 @@ import { UserService } from '../services/usuario.service';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import { UpdateUserDto } from '../dtos/user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Public } from 'src/auth/decorators/is-public.decorator';
 import * as bcrypt from 'bcrypt';
 
 @ApiTags('Users')
@@ -35,7 +34,6 @@ export class UsuarioController {
   }
 
   @ApiOperation({ summary: 'Create new user.' })
-  @Public()
   @Post('/signup')
   async createUser(
     @Body('username') username: string,
