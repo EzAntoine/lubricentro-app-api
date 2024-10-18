@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsuarioModule } from './modulos/usuario/usuario.module';
@@ -49,4 +49,13 @@ import { PassportModule } from '@nestjs/passport';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+        next();
+      })
+      .forRoutes('*'); // Apply to all routes
+  }
+}
