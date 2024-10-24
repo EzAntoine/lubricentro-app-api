@@ -11,11 +11,15 @@ export class VehicleService {
   ) {}
 
   async findAll() {
-    return await this.vehicleModel.find().populate('vehicles').exec();
+    return await this.vehicleModel
+      .find() /* .populate('vehicles') */
+      .exec();
   }
 
   async findOneById(id: string) {
-    return await this.vehicleModel.findById(id).populate('vehicles').exec();
+    return await this.vehicleModel
+      .findById(id) /* .populate('vehicles') */
+      .exec();
   }
 
   async create(client: CreateVehicleDto) {
@@ -30,9 +34,9 @@ export class VehicleService {
     return await this.vehicleModel.findByIdAndDelete(id);
   }
 
-  async addOrders(id: string, orders: string[]) {
+  /* async addOrders(id: string, orders: string[]) {
     const vehicle = await this.vehicleModel.findById(id);
     orders.forEach((v) => vehicle.orders.push(v));
     return vehicle.save();
-  }
+  } */
 }

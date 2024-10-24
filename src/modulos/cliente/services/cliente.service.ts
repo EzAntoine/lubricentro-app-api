@@ -13,7 +13,9 @@ export class ClienteService {
   }
 
   async findOneById(id: string) {
-    return await this.clientModel.findById(id).populate('vehicles').exec();
+    return await this.clientModel
+      .findById(id) /* .populate('vehicles') */
+      .exec();
   }
 
   async create(client: CreateClientDto) {
