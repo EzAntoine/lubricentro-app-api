@@ -1,5 +1,6 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { ObjectId } from 'mongoose';
 
 export class CreateOrderDto {
   @ApiProperty({ description: 'Order creation date.' })
@@ -9,7 +10,7 @@ export class CreateOrderDto {
   @ApiProperty({ description: 'Client ID.' })
   @IsNotEmpty()
   @IsString()
-  readonly clientId: string;
+  readonly clientId: ObjectId;
   @ApiProperty({ description: 'Vehicle plate.' })
   @IsNotEmpty()
   @IsString()

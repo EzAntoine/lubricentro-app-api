@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Client } from '../entities/client.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateClientDto, UpdateClientDTO } from '../dtos/client.dto';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ClienteService {
     return await this.clientModel.find().populate('vehicles').exec();
   }
 
-  async findOneById(id: string) {
+  async findOneById(id: Types.ObjectId) {
     return await this.clientModel
       .findById(id) /* .populate('vehicles') */
       .exec();

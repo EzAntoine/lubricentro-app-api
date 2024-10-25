@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Date, Document } from 'mongoose';
+import { Date, Document, Types } from 'mongoose';
 
 @Schema()
 export class Order extends Document {
   @Prop({ type: Date })
   date: Date;
-  @Prop()
-  clientId: string;
+  @Prop({ type: Types.ObjectId, ref: 'Client' })
+  clientId: Types.ObjectId;
   @Prop()
   vehiclePlate: string;
   @Prop()

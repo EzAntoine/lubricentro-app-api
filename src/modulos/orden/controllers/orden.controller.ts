@@ -16,7 +16,6 @@ import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ClienteService } from 'src/modulos/cliente/services/cliente.service';
-import mongoose, { Types } from 'mongoose';
 
 interface IOrder {
   _id: string;
@@ -52,12 +51,6 @@ export class OrdenController {
 
     const ordersWithClientNames = await Promise.all(
       orders.map(async (order) => {
-        /* if (!mongoose.Types.ObjectId.isValid(order.clientId)) {
-          throw new Error(
-            `Invalid ObjectId format for clientId: ${order.clientId}`,
-          );
-        }
-
         const clientResponse = await this.clientService.findOneById(
           order.clientId,
         );
@@ -65,12 +58,13 @@ export class OrdenController {
           throw new Error(`Client not found for ID: ${order.clientId}`);
         }
 
-        const clientName = clientResponse.name; */
-        const clientName = 'Apellido Nombre ' + order.clientId;
+        const clientName = `${clientResponse.surname} ${clientResponse.name}`;
+        const clientPhone = clientResponse.phone;
         return {
           ...order.toObject(),
           clientName,
-        } as IOrder & { clientName: string };
+          clientPhone,
+        } as IOrder & { clientName: string; clientPhone: string };
       }),
     );
 
