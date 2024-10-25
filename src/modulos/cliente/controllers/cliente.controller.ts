@@ -28,6 +28,7 @@ export class ClienteController {
   @HttpCode(HttpStatus.OK)
   async getClients() {
     const clients = await this.clientService.findAll();
+    clients.reverse();
     return {
       statusCode: HttpStatus.OK,
       message: 'Client listing successful',
