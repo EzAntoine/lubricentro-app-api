@@ -27,6 +27,7 @@ interface IOrder {
   estimateSolution: string;
   price: number;
   status: string;
+  observations: string;
 }
 interface IGetOrdersResponse {
   statusCode: number;
