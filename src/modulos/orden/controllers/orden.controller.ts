@@ -28,6 +28,7 @@ interface IOrder {
   price: number;
   status: string;
   observations: string;
+  cratedBy: string;
 }
 interface IGetOrdersResponse {
   statusCode: number;

@@ -33,6 +33,9 @@ export class CreateOrderDto {
   @ApiProperty({ description: 'Order observations.' })
   @IsString()
   readonly observations: string;
+  @ApiProperty({ description: 'Order creator.' })
+  @IsString()
+  readonly createdBy: string;
 }
 
 export class UpdateOrderDto extends PartialType(OmitType(CreateOrderDto, [])) {

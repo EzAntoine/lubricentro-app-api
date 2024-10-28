@@ -16,6 +16,8 @@ export class Client extends Document {
   email: string;
   @Prop()
   detail: string;
+  @Prop()
+  createdBy: string;
   @Prop({ type: [{ type: [Types.ObjectId], ref: 'Vehicle' }] })
   vehicles: Types.Array<Vehicle>;
 }

@@ -22,6 +22,8 @@ export class Order extends Document {
   status: string;
   @Prop()
   observations: string;
+  @Prop()
+  createdBy: string;
   /* Se puede agregar un trabajador responsable de la orden. 
   @Prop()
   responsible: string; */

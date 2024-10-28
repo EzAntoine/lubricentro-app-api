@@ -29,6 +29,9 @@ export class CreateClientDto {
   @ApiProperty({ description: 'Client details.' })
   @IsString()
   readonly detail: string;
+  @ApiProperty({ description: 'Order creator.' })
+  @IsString()
+  readonly createdBy: string;
 }
 
 export class UpdateClientDTO extends PartialType(
@@ -40,6 +43,7 @@ export class UpdateClientDTO extends PartialType(
   readonly phone?: number;
   readonly email?: string;
   readonly detail?: string;
+  readonly createdBy?: string;
 }
 
 export class AddVehiclesToClientDTO {
