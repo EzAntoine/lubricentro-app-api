@@ -15,6 +15,7 @@ import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { CreateClientDto, UpdateClientDTO } from '../dtos/client.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Types } from 'mongoose';
 
 @ApiTags('Clients')
 @UseGuards(JwtAuthGuard)
@@ -27,6 +28,7 @@ export class ClienteController {
   @HttpCode(HttpStatus.OK)
   async getClients() {
     const clients = await this.clientService.findAll();
+    clients.reverse();
     return {
       statusCode: HttpStatus.OK,
       message: 'Client listing successful',
@@ -36,7 +38,7 @@ export class ClienteController {
 
   @ApiOperation({ summary: 'Get client by ID.' })
   @Get(':id')
-  async getClientById(@Param('id') id: string) {
+  async getClientById(@Param('id') id: Types.ObjectId) {
     const client = await this.clientService.findOneById(id);
     return {
       statusCode: HttpStatus.OK,
