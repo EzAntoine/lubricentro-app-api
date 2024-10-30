@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -15,6 +16,11 @@ import { UpdateUserDto } from '../dtos/user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import * as bcrypt from 'bcrypt';
 
+interface IUser {
+  username: string;
+  password: string;
+}
+
 @ApiTags('Users')
 @UseGuards(JwtAuthGuard)
 @Controller('users')
@@ -23,14 +29,25 @@ export class UsuarioController {
 
   @ApiOperation({ summary: 'Get all Users.' })
   @Get()
-  getUsers() {
-    return this.userService.findAll();
+  async getUsers() {
+    let users = await this.userService.findAll();
+    users = users.reverse();
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Users listing successful',
+      data: users,
+    };
   }
 
   @ApiOperation({ summary: 'Get user by ID.' })
   @Get(':id')
   getUserById(@Param('id', MongoIdPipe) id: string) {
-    return this.userService.findOneById(id);
+    const user = this.userService.findOneById(id);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User found successfully',
+      data: user,
+    };
   }
 
   @ApiOperation({ summary: 'Create new user.' })
@@ -42,7 +59,11 @@ export class UsuarioController {
     const saltOrRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltOrRounds);
     const result = await this.userService.create(username, hashedPassword);
-    return result;
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: 'User created successfully',
+      data: result,
+    };
   }
 
   @ApiOperation({ summary: 'Update an existing user by ID.' })
@@ -51,14 +72,22 @@ export class UsuarioController {
     @Param('id', MongoIdPipe) id: string,
     @Body() payload: UpdateUserDto,
   ) {
-    return this.userService.update(id, payload);
+    const updatedUser = this.userService.update(id, payload);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Client updated successfully',
+      data: updatedUser,
+    };
   }
 
   @ApiOperation({ summary: 'Remove a user by ID.' })
   @Delete(':id')
   deleteUser(@Param('id', MongoIdPipe) id: string) {
-    console.log('ingreso con id: ' + id);
-
-    return this.userService.delete(id);
+    const deletedUser = this.userService.delete(id);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User deleted successfully',
+      data: deletedUser,
+    };
   }
 }
