@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   Post,
@@ -89,25 +90,42 @@ export class OrdenController {
 
   @ApiOperation({ summary: 'Create new order.' })
   @Post()
-  createOrder(@Body() payload: CreateOrderDto) {
-    const newOrder = this.orderService.create(payload);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Order created successful',
-      data: newOrder,
-    };
+  async createOrder(@Body() payload: CreateOrderDto) {
+    try {
+      const orderNumber = (await this.getOrders()).data.length;
+      const orderWithNumber = {
+        ...payload,
+        number: orderNumber + 1,
+      };
+      const newOrder = await this.orderService.create(orderWithNumber);
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Order created successful',
+        data: newOrder,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to create order',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @ApiOperation({ summary: 'Update an existing order by ID.' })
-  @Put()
-  updateOrder(
+  @Put(':id')
+  async updateOrder(
     @Param('id', MongoIdPipe) id: string,
     @Body() payload: UpdateOrderDto,
   ) {
-    const updOrder = this.orderService.update(id, payload);
+    const updOrder = await this.orderService.update(id, payload);
     return {
       statusCode: HttpStatus.OK,
-      message: 'Order update successful',
+      message: 'Order updated successfully',
       data: updOrder,
     };
   }
