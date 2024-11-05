@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   Post,
@@ -48,78 +49,139 @@ export class OrdenController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async getOrders(): Promise<IGetOrdersResponse> {
-    let orders = await this.orderService.findAll();
-    orders = orders.reverse();
+    try {
+      let orders = await this.orderService.findAll();
+      orders = orders.reverse();
 
-    const ordersWithClientNames = await Promise.all(
-      orders.map(async (order) => {
-        const clientResponse = await this.clientService.findOneById(
-          order.clientId,
-        );
-        if (!clientResponse) {
-          throw new Error(`Client not found for ID: ${order.clientId}`);
-        }
+      const ordersWithClientNames = await Promise.all(
+        orders.map(async (order) => {
+          const clientResponse = await this.clientService.findOneById(
+            order.clientId,
+          );
+          if (!clientResponse) {
+            throw new Error(`Client not found for ID: ${order.clientId}`);
+          }
 
-        const clientName = `${clientResponse.surname} ${clientResponse.name}`;
-        const clientPhone = clientResponse.phone;
-        return {
-          ...order.toObject(),
-          clientName,
-          clientPhone,
-        } as IOrder & { clientName: string; clientPhone: string };
-      }),
-    );
+          const clientName = `${clientResponse.surname} ${clientResponse.name}`;
+          const clientPhone = clientResponse.phone;
+          return {
+            ...order.toObject(),
+            clientName,
+            clientPhone,
+          } as IOrder & { clientName: string; clientPhone: string };
+        }),
+      );
 
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Order listing successful',
-      data: ordersWithClientNames,
-    };
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Order listing successfully.',
+        data: ordersWithClientNames,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to get orders.',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
   @ApiOperation({ summary: 'Get order by ID.' })
   @Get(':id')
   getOrderById(@Param('id') id: string) {
-    const order = this.orderService.findOneById(id);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Order by ID successful',
-      data: order,
-    };
+    try {
+      const order = this.orderService.findOneById(id);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Order by ID successful',
+        data: order,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to get order by ID.',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @ApiOperation({ summary: 'Create new order.' })
   @Post()
-  createOrder(@Body() payload: CreateOrderDto) {
-    const newOrder = this.orderService.create(payload);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Order created successful',
-      data: newOrder,
-    };
+  async createOrder(@Body() payload: CreateOrderDto) {
+    try {
+      const orderNumber = (await this.getOrders()).data.length;
+      const orderWithNumber = {
+        ...payload,
+        number: orderNumber + 1,
+      };
+      const newOrder = await this.orderService.create(orderWithNumber);
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Order created successfully.',
+        data: newOrder,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to create order',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @ApiOperation({ summary: 'Update an existing order by ID.' })
-  @Put()
-  updateOrder(
+  @Put(':id')
+  async updateOrder(
     @Param('id', MongoIdPipe) id: string,
     @Body() payload: UpdateOrderDto,
   ) {
-    const updOrder = this.orderService.update(id, payload);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Order update successful',
-      data: updOrder,
-    };
+    try {
+      const updOrder = await this.orderService.update(id, payload);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Order updated successfully.',
+        data: updOrder,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to update order.',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @ApiOperation({ summary: 'Delete an order by ID.' })
   @Delete(':id')
   deleteOrder(@Param('id', MongoIdPipe) id: string) {
-    const deletedOrder = this.orderService.delete(id);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'Order delete successful',
-      data: deletedOrder,
-    };
+    try {
+      const deletedOrder = this.orderService.delete(id);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Order deleted successfully.',
+        data: deletedOrder,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to delete order.',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

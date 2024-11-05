@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
 export class CreateOrderDto {
@@ -25,6 +25,7 @@ export class CreateOrderDto {
   readonly estimateSolution: string;
   @ApiProperty({ description: 'Price.' })
   @IsNotEmpty()
+  @IsNumber()
   readonly price: number;
   @ApiProperty({ description: 'Order status.' })
   @IsNotEmpty()

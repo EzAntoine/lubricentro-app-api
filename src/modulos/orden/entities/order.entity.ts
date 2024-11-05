@@ -3,6 +3,8 @@ import { Date, Document, Types } from 'mongoose';
 
 @Schema()
 export class Order extends Document {
+  @Prop()
+  number: number;
   @Prop({ type: Date })
   date: Date;
   @Prop({ type: Types.ObjectId, ref: 'Client' })
@@ -24,9 +26,6 @@ export class Order extends Document {
   observations: string;
   @Prop()
   createdBy: string;
-  /* Se puede agregar un trabajador responsable de la orden. 
-  @Prop()
-  responsible: string; */
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
