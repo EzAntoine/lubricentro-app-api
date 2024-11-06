@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -22,8 +24,24 @@ export class VehiculoController {
 
   @ApiOperation({ summary: 'Get all vehicles.' })
   @Get()
-  getAllVehicles() {
-    return this.vehicleService.findAll();
+  async getAllVehicles() {
+    try {
+      const allVehicles = await this.vehicleService.findAll();
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'Vehicles returned successfully.',
+        data: allVehicles,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to return vehicles.',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @ApiOperation({ summary: 'Get vehicle by ID.' })
@@ -34,8 +52,24 @@ export class VehiculoController {
 
   @ApiOperation({ summary: 'Create new vehicle.' })
   @Post()
-  createClient(@Body() payload: CreateVehicleDto) {
-    return this.vehicleService.create(payload);
+  async createClient(@Body() payload: CreateVehicleDto) {
+    try {
+      const newVehicle = await this.vehicleService.create(payload);
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'Vehicle created successfully.',
+        data: newVehicle,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to create vehicle.',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @ApiOperation({ summary: 'Update an existing vehicle by ID.' })
