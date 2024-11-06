@@ -11,6 +11,8 @@ export class Client extends Document {
   @Prop()
   dni: string;
   @Prop()
+  address: string;
+  @Prop()
   phone: string;
   @Prop()
   email: string;

@@ -14,6 +14,10 @@ export class CreateClientDto {
   @IsString()
   @IsNotEmpty()
   readonly dni: string;
+  @ApiProperty({ description: 'Client address.' })
+  @IsString()
+  @IsNotEmpty()
+  readonly address: string;
   @ApiProperty({ description: 'Client phone number.' })
   @IsString()
   @IsNotEmpty()
@@ -40,6 +44,7 @@ export class UpdateClientDTO extends PartialType(
   readonly name?: string;
   readonly surname?: string;
   readonly dni?: number;
+  readonly address?: string;
   readonly phone?: number;
   readonly email?: string;
   readonly detail?: string;

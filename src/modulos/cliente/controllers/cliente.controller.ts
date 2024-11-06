@@ -60,11 +60,11 @@ export class ClienteController {
 
   @ApiOperation({ summary: 'Update an existing client by ID.' })
   @Put(':id')
-  updateClient(
+  async updateClient(
     @Param('id', MongoIdPipe) id: string,
     @Body() payload: UpdateClientDTO,
   ) {
-    const updateClient = this.clientService.update(id, payload);
+    const updateClient = await this.clientService.update(id, payload);
     return {
       statusCode: HttpStatus.OK,
       message: 'Client updated successfully',
