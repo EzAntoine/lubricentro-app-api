@@ -46,13 +46,63 @@ export class VehiculoController {
 
   @ApiOperation({ summary: 'Get vehicle by ID.' })
   @Get(':id')
-  getClientById(@Param('id') id: string) {
-    return this.vehicleService.findOneById(id);
+  async getVehicleById(@Param('id') id: string) {
+    try {
+      const vehicle = await this.vehicleService.findOneById(id);
+
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'Vehicle returned successfully.',
+        data: vehicle,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to return vehicle.',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+  @ApiOperation({ summary: 'Get vehicle by plate.' })
+  @Get('plate/:plate')
+  async getVehicleByPlate(@Param('plate') plate: string) {
+    try {
+      const allVehicles = await this.vehicleService.findAll();
+      const vehicle = allVehicles.find((elem) => elem.plate === plate);
+
+      if (!vehicle) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            message: 'Vehicle with plate ' + plate + ' not found.',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'Vehicle returned successfully.',
+        data: vehicle,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Failed to return vehicle.',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @ApiOperation({ summary: 'Create new vehicle.' })
   @Post()
-  async createClient(@Body() payload: CreateVehicleDto) {
+  async createVehicle(@Body() payload: CreateVehicleDto) {
     try {
       const newVehicle = await this.vehicleService.create(payload);
       return {
@@ -74,7 +124,7 @@ export class VehiculoController {
 
   @ApiOperation({ summary: 'Update an existing vehicle by ID.' })
   @Put(':id')
-  updateClient(
+  updateVehicle(
     @Param('id', MongoIdPipe) id: string,
     @Body() payload: UpdateVehicleDto,
   ) {
@@ -83,7 +133,7 @@ export class VehiculoController {
 
   @ApiOperation({ summary: 'Remove a vehicle by ID.' })
   @Delete(':id')
-  deleteClient(@Param('id', MongoIdPipe) id: string) {
+  deleteVehicle(@Param('id', MongoIdPipe) id: string) {
     return this.vehicleService.delete(id);
   }
 }
