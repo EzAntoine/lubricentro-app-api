@@ -2,18 +2,20 @@ import { ApiProperty, PartialType, OmitType } from '@nestjs/swagger';
 import {
   IsArray,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsPositive,
   IsString,
   Max,
   Min,
 } from 'class-validator';
+import { ObjectId } from 'mongoose';
 
 export class CreateVehicleDto {
   @ApiProperty({ description: 'Vehicle owner ID.' })
   @IsString()
   @IsNotEmpty()
-  readonly ownerId: string;
+  readonly ownerId: ObjectId;
   @ApiProperty({ description: 'Vehicle brand.' })
   @IsString()
   @IsNotEmpty()
@@ -22,6 +24,14 @@ export class CreateVehicleDto {
   @IsString()
   @IsNotEmpty()
   readonly modelo: string;
+  @ApiProperty({ description: 'Vehicle engine.' })
+  @IsString()
+  @IsNotEmpty()
+  readonly engine: string;
+  @ApiProperty({ description: 'Vehicle kilometers.' })
+  @IsNumber()
+  @IsNotEmpty()
+  readonly kilometers: number;
   @ApiProperty({ description: 'Vehicle fabrication year.' })
   @IsOptional()
   @IsPositive()
@@ -47,6 +57,8 @@ export class UpdateVehicleDto extends PartialType(
   readonly ownerId?: string;
   readonly brand?: string;
   readonly modelo?: number;
+  readonly engine?: string;
+  readonly kilometers?: number;
   readonly year?: number;
   readonly plate?: string;
   readonly details?: string;

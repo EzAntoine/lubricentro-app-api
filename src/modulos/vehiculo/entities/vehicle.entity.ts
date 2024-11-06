@@ -7,12 +7,16 @@ import { Order } from 'src/modulos/orden/entities/order.entity';
 export class Vehicle extends Document {
   @Prop({ type: ObjectId, required: true, unique: true })
   plate: string;
-  @Prop()
-  ownerId: string;
+  @Prop({ type: Types.ObjectId, ref: 'Client' })
+  ownerId: Types.ObjectId;
   @Prop()
   brand: string;
   @Prop()
   modelo: string;
+  @Prop()
+  engine: string;
+  @Prop()
+  kilometers: number;
   @Prop()
   year: string;
   @Prop()
